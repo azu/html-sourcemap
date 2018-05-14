@@ -1,0 +1,62 @@
+<p>先ほど示したように<code>typeof</code>ではオブジェクトと配列の区別は付きません。
+    また、<code>length</code>プロパティが存在するかでは、それが配列であるとは判断できません。</p><p>そのため、あるオブジェクトが配列なのかを知りたい場合には、<code>Array.isArray</code>メソッドを利用します。
+    <code>Array.isArray</code>メソッドは引数が配列ならば<code>true</code>を返します。</p><p><a class="gitbook-plugin-js-console" aria-hidden="true"></a></p><pre><code class="lang-js"><span class="hljs-keyword">const</span> array = [];
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Array</span>.isArray(array)); <span class="hljs-comment">// => true</span>
+<span class="hljs-comment">// 配列のようなオブジェクト</span>
+<span class="hljs-keyword">const</span> object = {
+    length: <span class="hljs-number">0</span>
+};
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Array</span>.isArray(object)); <span class="hljs-comment">// => false</span></code></pre>
+<h3 id="typed-array"><a name="typed-array" class="plugin-anchor" href="#typed-array"><i class="fa fa-link" aria-hidden="true"></i></a>[コラム] TypedArray</h3><p>JavaScriptの配列は可変長のみですが、<code>TypedArray</code>という固定長でかつ型付きの配列を扱う別のオブジェクトが存在します。
+    <code>TypedArray</code>はバイナリデータを扱うためのオブジェクトで、WebGLやバイナリを扱う場面で利用されます。
+    <code>TypedArray</code>は文字列や数値などのプリミティブ型の値はそのままでは扱えないため、扱う値はTypedArrayオブジェクトという形式にする必要があります。
+    そのため、通常の配列とは異なる使い勝手や用途が存在します。</p><p>JavaScriptで配列といった場合には<code>Array</code>を示します。</p><h2 id="create-and-access"><a name="create-and-access" class="plugin-anchor" href="#create-and-access"><i class="fa fa-link" aria-hidden="true"></i></a>配列の作成とアクセス</h2><p>配列の作成と要素へのアクセス方法は<a href="../data-type#array">データ型とリテラル</a>ですでに紹介していますが、
+    もう一度振り返ってみましょう。</p><p>配列の作成には配列リテラルを使うのが簡単です。
+    配列リテラル（<code>[</code>と<code>]</code>）の中に要素をカンマ（<code>,</code>）区切りで記述するだけです。</p><p><a class="gitbook-plugin-js-console" aria-hidden="true"></a></p><pre><code class="lang-js"><span class="hljs-keyword">const</span> emptyArray = [];
+<span class="hljs-keyword">const</span> numbers = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+<span class="hljs-keyword">const</span> matrix = [
+    [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>],
+    [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>]
+]; <span class="hljs-comment">// ２次元配列</span></code></pre>
+<p>作成した配列の要素へインデックスとなる数値を、<code>配列[インデックス]</code>と記述することで、
+    そのインデックスにある要素を配列から読み取ることができます。
+    配列の先頭要素のインデックスは<code>0</code>となります。配列のインデックスは、<code>0</code>以上<code>2^32 - 1</code>未満の整数となります。</p><p><a class="gitbook-plugin-js-console" aria-hidden="true"></a></p><pre><code class="lang-js"><span class="hljs-keyword">const</span> array = [<span class="hljs-string">"one"</span>, <span class="hljs-string">"two"</span>, <span class="hljs-string">"three"</span>];
+<span class="hljs-built_in">console</span>.log(array[<span class="hljs-number">0</span>]); <span class="hljs-comment">// => "one"</span></code></pre>
+<p>先ほど学んだように、配列の<code>length</code>プロパティは配列の要素の数を返します。
+    そのため、配列の最後の要素へアクセスするには <code>array.length - 1</code> をインデックスとして指定します。</p><p><a class="gitbook-plugin-js-console" aria-hidden="true"></a></p><pre><code class="lang-js"><span class="hljs-keyword">const</span> array = [<span class="hljs-string">"one"</span>, <span class="hljs-string">"two"</span>, <span class="hljs-string">"three"</span>];
+<span class="hljs-built_in">console</span>.log(array[array.length - <span class="hljs-number">1</span>]); <span class="hljs-comment">// => "three"</span></code></pre>
+<p>一方、存在しないインデックスにアクセスした場合はどうなるでしょうか？
+    多くの言語では、配列の存在しないインデックスへアクセスするとエラーなりますが、JavaScriptでは<code>undefined</code>が返ってきます。</p><p><a class="gitbook-plugin-js-console" aria-hidden="true"></a></p><pre><code class="lang-js"><span class="hljs-keyword">const</span> array = [<span class="hljs-string">"one"</span>, <span class="hljs-string">"two"</span>, <span class="hljs-string">"three"</span>];
+<span class="hljs-built_in">console</span>.log(array[<span class="hljs-number">100</span>]); <span class="hljs-comment">// => undefined</span></code></pre>
+<p>これは、配列がオブジェクトであることを考えると、次のように存在しないプロパティへのアクセスと同じということが分かります。
+    オブジェクトでも、存在しないプロパティへのアクセスした場合には<code>undefined</code>が返ってきます。</p><p><a class="gitbook-plugin-js-console" aria-hidden="true"></a></p><pre><code class="lang-js"><span class="hljs-keyword">const</span> object = {
+    <span class="hljs-string">"0"</span>: <span class="hljs-string">"one"</span>,
+    <span class="hljs-string">"1"</span>: <span class="hljs-string">"two"</span>,
+    <span class="hljs-string">"2"</span>: <span class="hljs-string">"three"</span>,
+    <span class="hljs-string">"length"</span>: <span class="hljs-number">3</span>
+};
+<span class="hljs-comment">// object[100]はobject["100"]としてアクセスされる</span>
+<span class="hljs-comment">// objectにはプロパティ名が"100"のものがないため、undefinedが返る</span>
+<span class="hljs-built_in">console</span>.log(object[<span class="hljs-number">100</span>]); <span class="hljs-comment">// => undefined</span></code></pre>
+<p>また、配列は常に<code>length</code>の数だけ要素を持っているとは限りません。
+    次のように、配列リテラルでは値を省略することで、未定義の要素を含めることができます。
+    このような、配列の中に隙間があるものを<strong>疎な配列</strong>と呼びます。
+    一方、隙間がなくすべてのインデックスに要素がある配列を<strong>密な配列</strong>と呼びます。</p><p><a class="gitbook-plugin-js-console" aria-hidden="true"></a></p><pre><code class="lang-js"><span class="hljs-comment">// 未定義の箇所が1つ含まれる疎な配列</span>
+<span class="hljs-keyword">const</span> sparseArray = [<span class="hljs-number">1</span>,, <span class="hljs-number">3</span>];
+<span class="hljs-built_in">console</span>.log(sparseArray.length); <span class="hljs-comment">// => 3 </span>
+<span class="hljs-comment">// 1番目の要素は存在しないため undefined が返る</span>
+<span class="hljs-built_in">console</span>.log(sparseArray[<span class="hljs-number">1</span>]); <span class="hljs-comment">// => undefined</span></code></pre>
+<h2 id="diff-undefined-and-no-element"><a name="diff-undefined-and-no-element" class="plugin-anchor" href="#diff-undefined-and-no-element"><i class="fa fa-link" aria-hidden="true"></i></a>[コラム] undefinedの要素と未定義の要素の違い</h2><p>疎な配列で該当するインデックスに要素がない場合は<code>undefined</code>を返します。
+    しかし、JavaScriptに<code>undefined</code>値も存在するため、配列に<code>undefined</code>値がある場合に区別できません。</p><p><a class="gitbook-plugin-js-console" aria-hidden="true"></a></p><pre><code class="lang-js"><span class="hljs-comment">// 要素として`undefined`を持つ密な配列</span>
+<span class="hljs-keyword">const</span> denseArray = [<span class="hljs-number">1</span>, <span class="hljs-literal">undefined</span>, <span class="hljs-number">3</span>];
+<span class="hljs-comment">// 要素そのものがない疎な配列</span>
+<span class="hljs-keyword">const</span> sparseArray = [<span class="hljs-number">1</span>, , <span class="hljs-number">3</span>];
+<span class="hljs-built_in">console</span>.log(denseArray[<span class="hljs-number">1</span>]); <span class="hljs-comment">// => undefined</span>
+<span class="hljs-built_in">console</span>.log(sparseArray[<span class="hljs-number">1</span>]); <span class="hljs-comment">// => undefined</span></code></pre>
+<p>この違いを見つける方法として利用できるのが<code>Object#hasOwnProperty</code>メソッドです。
+    <code>hasOwnProperty</code>メソッドを使うことで、配列の指定したインデックスに要素自体が存在するかを判定できます。</p><p><a class="gitbook-plugin-js-console" aria-hidden="true"></a></p><pre><code class="lang-js"><span class="hljs-keyword">const</span> denseArray = [<span class="hljs-number">1</span>, <span class="hljs-literal">undefined</span>, <span class="hljs-number">3</span>];
+<span class="hljs-keyword">const</span> sparseArray = [<span class="hljs-number">1</span>, , <span class="hljs-number">3</span>];
+<span class="hljs-comment">// 要素自体は`undefined`値が存在する</span>
+<span class="hljs-built_in">console</span>.log(denseArray.hasOwnProperty(<span class="hljs-number">1</span>)); <span class="hljs-comment">// => true</span>
+<span class="hljs-comment">// 要素自体がない</span>
+<span class="hljs-built_in">console</span>.log(sparseArray.hasOwnProperty(<span class="hljs-number">1</span>)); <span class="hljs-comment">// => false</span></code></pre>

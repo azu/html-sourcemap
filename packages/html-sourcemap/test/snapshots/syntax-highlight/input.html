@@ -1,0 +1,15 @@
+
+<p>破壊的なメソッドの例として、配列に要素を追加する<code>Array#push</code>メソッドがあります。
+    <code>push</code>メソッドは、<code>myArray</code>の配列そのものへ要素を追加しています。
+    その結果<code>myArray</code>の参照する配列が変更されるため破壊的なメソッドです。</p><p><a class="gitbook-plugin-js-console" aria-hidden="true"></a></p><pre><code class="lang-js"><span class="hljs-keyword">const</span> myArray = [<span class="hljs-string">"A"</span>, <span class="hljs-string">"B"</span>, <span class="hljs-string">"C"</span>];
+<span class="hljs-keyword">const</span> result = myArray.push(<span class="hljs-string">"D"</span>);
+<span class="hljs-comment">// `push`の返り値は配列ではなく、追加後の配列のlength</span>
+<span class="hljs-built_in">console</span>.log(result); <span class="hljs-comment">// => 4</span>
+<span class="hljs-comment">// `myArray`が参照する配列そのものが変更されている</span>
+<span class="hljs-built_in">console</span>.log(myArray); <span class="hljs-comment">// => ["A", "B", "C", "D"]</span></code></pre>
+<!-- 具体例:非破壊的メソッド -->
+
+
+<p>非破壊的なメソッドの例として、配列に要素を結合する<code>Array#concat</code>メソッドがあります。
+    <code>concat</code>メソッドは、<code>myArray</code>をコピーした配列に対して要素を結合しその配列を返します。
+    その結果<code>myArray</code>の参照する配列は変更されないため非破壊的なメソッドです。</p>
